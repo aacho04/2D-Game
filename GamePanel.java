@@ -1,24 +1,51 @@
-package game_2d;
 import javax.swing.JPanel;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements Runnable {
 
-final int originalTileSize=16;
-final int scale=3;
-final int tileSize=originalTileSize*scale; //48x48 tile
-final int maxScreenCol=16;
-final int maxScreenRow=12;
-final int screenWidth=tileSize*maxScreenCol; //768 pixels
-final int screenHeight=tileSize*maxScreenRow; //576 pixels      
+  
+    private static final int ORIGINAL_TILE_SIZE = 16;
+    private static final int SCALE = 3;
+    private static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
 
-public GamePanel() {
-    this.setPreferredSize(new Dimension(screenWidth,screenHeight));
-    this.setBackground(Color.black);
-    this.setDoubleBuffered(true);
-} 
+    private static final int MAX_SCREEN_COL = 16;
+    private static final int MAX_SCREEN_ROW = 12;
+
+    private static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
+    private static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
+    Thread gameThread;
+
+    public GamePanel() {
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setBackground(Color.BLACK);
+        this.setDoubleBuffered(true);
+    }
+
+    public void startGameThread() {
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
+    @Override
+    public void run() {
+        while (gameThread!=null) {
+            // System.out.println("Game is running");
+            update();
+            repaint();
+        }
+     }
+
+     public void update() {
+
+    }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2=(Graphics2D)g;
+        g2.setColor(Color.white);
+        g2.fillRect(100,100,TILE_SIZE,TILE_SIZE);
+        g2.dispose();
+    }
 }
-
-    
-
