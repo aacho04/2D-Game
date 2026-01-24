@@ -17,11 +17,17 @@ public class GamePanel extends JPanel implements Runnable {
     private static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
     private static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
     Thread gameThread;
+    KeyHandler keyH = new KeyHandler();
+    int playerX=100;
+    int playerY=100;
+    int playerSpeed=4;// 4 pixels per update
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
     }
 
     public void startGameThread() {
@@ -38,14 +44,25 @@ public class GamePanel extends JPanel implements Runnable {
      }
 
      public void update() {
-
+        if(keyH.upPressed){
+            playerY-=playerSpeed;
+        }
+        if(keyH.downPressed){
+            playerY+=playerSpeed;
+        }
+        if(keyH.leftPressed){
+            playerX-=playerSpeed;
+        }
+        if(keyH.rightPressed){
+            playerX+=playerSpeed;
+        }
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2=(Graphics2D)g;
         g2.setColor(Color.white);
-        g2.fillRect(100,100,TILE_SIZE,TILE_SIZE);
+        g2.fillRect(playerX,playerY,TILE_SIZE,TILE_SIZE);
         g2.dispose();
     }
 }
