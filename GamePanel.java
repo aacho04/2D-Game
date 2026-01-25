@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     int playerX=100;
     int playerY=100;
     int playerSpeed=4;// 4 pixels per update
+    int FPS=60;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -38,8 +39,24 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         while (gameThread!=null) {
             // System.out.println("Game is running");
+            // long currentTime=System.nanoTime();
+            // System.out.println("Current Time:"+currentTime)
+            double drawInterval=1000000000/FPS;
+            double nextDrawTime=System.nanoTime()+drawInterval;
+
+
             update();
+
             repaint();
+            
+            try {
+                double remainingTime=nextDrawTime-System.nanoTime();
+                Thread.sleep((long)remainingTime);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
         }
      }
 
